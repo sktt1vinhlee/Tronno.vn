@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Tasks for the TRONNO owed-debt tracking rebuild.",
+  "tasks": [
+    {
+      "type": "transform",
+      "id": "001-transform-debt-domain-and-ownership",
+      "description": "Rebuild debt data and APIs around debts owed by the signed-in user.",
+      "reason": "The current product includes creditor-side and two-way P2P concepts that do not match the requested single-sided debt tracker.",
+      "requirements": "Rework the backend domain, API, schema/migrations, seed behavior, and configuration for owed-only debt tracking. Remove creditor-side and two-way/P2P debt semantics. Scope every debt, payment, reminder, and related operation to the authenticated owner on the server; reject cross-owner reads and writes regardless of client-supplied identifiers. Support interest-free and interest-bearing debts and recorded payments. As explicitly authorized, existing account and debt data may be discarded during the rebuild; do not seed demo accounts, known passwords, or sample personal debts. Keep database and service credentials out of source control and use external configuration.",
+      "successCriteria": {
+        "passBuild": "true",
+        "generateNewUnitTests": "true",
+        "passUnitTests": "true"
+      }
+    },
+    {
+      "type": "transform",
+      "id": "002-transform-debt-creation-and-owed-only-ui",
+      "description": "Replace debt-management screens with a simple owed-only experience.",
+      "reason": "The interface should clearly represent only debts the signed-in user owes and make first-time debt entry straightforward.",
+      "requirements": "Update the frontend to remove creditor-side and misleading two-way/P2P debt UI semantics. Provide a genuinely empty create-debt form with a simple choice between interest-free and interest-bearing debt, and fields appropriate to the selected option. Do not populate the user's account with example debts. Use authenticated APIs and show clear empty, validation, and error states.",
+      "dependencies": [
+        "001-transform-debt-domain-and-ownership"
+      ],
+      "successCriteria": {
+        "passBuild": "true",
+        "generateNewUnitTests": "true",
+        "passUnitTests": "true"
+      }
+    },
+    {
+      "type": "transform",
+      "id": "003-transform-daily-email-reminders",
+      "description": "Send daily due-date email reminders until each debt is fully paid.",
+      "reason": "The user needs timely reminders that do not stop merely because a due date has passed.",
+      "requirements": "Send one reminder per debt per day starting five days before its due date, continue every day after the due date, and stop only when recorded payments fully satisfy the debt. Do not treat projected or scheduled payments as paid. Ensure daily processing is safe to retry without duplicate same-day sends, handle delivery failures without silently marking a reminder as sent, and configure mail credentials and scheduling settings outside source code.",
+      "dependencies": [
+        "002-transform-debt-creation-and-owed-only-ui"
+      ],
+      "successCriteria": {
+        "passBuild": "true",
+        "generateNewUnitTests": "true",
+        "passUnitTests": "true"
+      }
+    },
+    {
+      "type": "transform",
+      "id": "004-transform-negotiation-drafts",
+      "description": "Generate user-reviewed repayment negotiation letters and messages.",
+      "reason": "The user wants practical communication drafts in place of creditor-evasion or misleading language.",
+      "requirements": "Add automated drafting of repayment negotiation letters and short messages using the user's own debt and proposed repayment details. Keep drafts factual, respectful, and for user review/editing; never send them automatically. Ensure draft access is restricted to the authenticated owner and remove misleading creditor-evasion wording and flows.",
+      "dependencies": [
+        "003-transform-daily-email-reminders"
+      ],
+      "successCriteria": {
+        "passBuild": "true",
+        "generateNewUnitTests": "true",
+        "passUnitTests": "true"
+      }
+    },
+    {
+      "type": "security",
+      "id": "005-security-dependency-and-configuration-review",
+      "description": "Validate dependency security and protect account, debt, and mail configuration.",
+      "reason": "The rebuilt application handles private financial records and email configuration.",
+      "requirements": "Scan and remediate known vulnerable dependencies in the backend and frontend. Verify authentication and owner-scoped access for all debt-related operations, ensure no credentials or demo passwords are committed, and confirm mail/database secrets are supplied through external configuration. Preserve the requested owed-only privacy boundary.",
+      "dependencies": [
+        "004-transform-negotiation-drafts"
+      ],
+      "successCriteria": {
+        "passBuild": "true",
+        "generateNewUnitTests": "true",
+        "passUnitTests": "true"
+      }
+    }
+  ],
+  "metadata": {
+    "planName": "tronno-debt-tracking-rebuild",
+    "projectName": "TRONNO",
+    "language": "java",
+    "createdAt": "2026-11-09T16:32:47+07:00",
+    "version": "1.0"
+  }
+}

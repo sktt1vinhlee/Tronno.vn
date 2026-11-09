@@ -1,0 +1,72 @@
+# ===== Build output =====
+target/
+build/
+out/
+*.class
+*.jar
+*.war
+
+# ===== Logs =====
+*.log
+logs/
+spring.log
+
+# ===== IDE - IntelliJ =====
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# ===== IDE - VS Code =====
+.vscode/
+.classpath
+.project
+.settings/
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===== Env / secrets =====
+.env
+application-local.yml
+application-local.properties
+
+# ===== Test / coverage =====
+jacoco/
+
+# ===== File cá nhân / debug =====
+verify-token.txt
+query.sql
+HELP.md
+
+# ===== Maven wrapper (bật lại nếu team dùng) =====
+# .mvn/
+# mvnw
+# mvnw.cmd
+
+# ===== Frontend - Node / Vite / React =====
+node_modules/
+dist/
+dist-ssr/
+.vite/
+*.local
+
+# Frontend env (giữ .env.example)
+.env.local
+.env.development.local
+.env.production.local
+
+# Coverage / test
+coverage/
+*.tsbuildinfo
+
+# tsc -b emit ra JS từ file .ts cấu hình (vite.config.ts -> vite.config.js)
+vite.config.js
+vite.config.d.ts
+
+# ===== File rác do lỗi gõ lệnh trong terminal =====
+/\[Help
+/cd
+/mvn
