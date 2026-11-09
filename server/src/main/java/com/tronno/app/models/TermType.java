@@ -14,7 +14,6 @@ package com.tronno.app.models;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 public enum TermType {
     /** Người dùng chọn ngày đáo hạn cụ thể, hệ thống chia lịch trả theo tháng. */
     FIXED_DATE,

@@ -13,7 +13,6 @@ package com.tronno.app.exception;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 public class ResourceNotFoundException extends RuntimeException {
     /**
      * Tạo lỗi không tìm thấy tài nguyên.

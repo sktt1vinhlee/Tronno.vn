@@ -17,7 +17,6 @@ import jakarta.validation.ConstraintValidatorContext;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 public class StrongPasswordValidator implements ConstraintValidator<StrongPassword, String> {
     private static final int MIN_LENGTH = 8;
 

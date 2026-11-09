@@ -15,7 +15,6 @@ package com.tronno.app.models;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 public enum ReminderType {
     /** Còn <= 5 ngày tới hạn: nhắc trước. */
     BEFORE_DUE,

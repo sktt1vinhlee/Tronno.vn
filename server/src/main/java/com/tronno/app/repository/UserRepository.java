@@ -22,7 +22,6 @@ import com.tronno.app.models.UserRole;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 

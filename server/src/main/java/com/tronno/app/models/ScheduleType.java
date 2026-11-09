@@ -13,7 +13,6 @@ package com.tronno.app.models;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 public enum ScheduleType {
     EQUAL_PRINCIPAL,
     ANNUITY,

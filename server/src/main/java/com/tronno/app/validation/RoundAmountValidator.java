@@ -18,7 +18,6 @@ import java.math.BigDecimal;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 public class RoundAmountValidator implements ConstraintValidator<RoundAmount, BigDecimal> {
     private static final BigDecimal STEP = new BigDecimal("1000");
 

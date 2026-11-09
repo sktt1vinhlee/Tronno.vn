@@ -28,7 +28,6 @@ import org.springframework.web.server.ResponseStatusException;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     /**

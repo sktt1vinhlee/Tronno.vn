@@ -19,7 +19,6 @@ import lombok.*;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 @Entity
 @Table(name = "payment_allocations")
 @Getter

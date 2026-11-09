@@ -25,7 +25,6 @@ import com.tronno.app.service.DebtService;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 @RestController
 @RequestMapping("/api/creditors")
 @RequiredArgsConstructor

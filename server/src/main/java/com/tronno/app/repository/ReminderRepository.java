@@ -22,7 +22,6 @@ import com.tronno.app.models.ReminderStatus;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 public interface ReminderRepository extends JpaRepository<Reminder, Long> {
     List<Reminder> findByUserIdOrderByRemindAtAsc(Long userId);
     List<Reminder> findByDebtIdOrderByRemindAtAsc(Long debtId);

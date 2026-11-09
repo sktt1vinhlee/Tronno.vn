@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 @Service
 public class JwtService {
     @Value("${app.jwt.secret}")

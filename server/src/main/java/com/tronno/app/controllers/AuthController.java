@@ -23,7 +23,6 @@ import com.tronno.app.service.AuthService;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor

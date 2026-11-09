@@ -24,7 +24,6 @@ import com.tronno.app.service.LetterService;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor

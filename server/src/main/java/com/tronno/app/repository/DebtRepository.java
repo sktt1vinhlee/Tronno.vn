@@ -23,7 +23,6 @@ import com.tronno.app.models.DebtStatus;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 public interface DebtRepository extends JpaRepository<Debt, Long> {
     List<Debt> findByUserIdOrderByCreatedAtDesc(Long userId);
     List<Debt> findByUserIdAndStatusOrderByCreatedAtDesc(Long userId, DebtStatus status);

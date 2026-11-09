@@ -23,7 +23,6 @@ import java.lang.annotation.Target;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 @Documented
 @Constraint(validatedBy = RoundAmountValidator.class)
 @Target({ElementType.FIELD, ElementType.PARAMETER})

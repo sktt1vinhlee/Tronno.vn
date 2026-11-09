@@ -24,7 +24,6 @@ import com.tronno.app.service.ReminderService;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 @Component
 @RequiredArgsConstructor
 public class ReminderScheduler {

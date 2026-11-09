@@ -20,7 +20,6 @@ import com.tronno.app.models.PaymentAllocation;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 public interface PaymentAllocationRepository extends JpaRepository<PaymentAllocation, Long> {
     List<PaymentAllocation> findByPaymentIdOrderByIdAsc(Long paymentId);
     List<PaymentAllocation> findByScheduleId(Long scheduleId);

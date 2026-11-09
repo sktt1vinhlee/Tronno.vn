@@ -21,7 +21,6 @@ import com.tronno.app.models.Payment;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
     List<Payment> findByDebtIdOrderByPaidAtDescIdDesc(Long debtId);
     List<Payment> findByUserIdOrderByPaidAtDescIdDesc(Long userId);

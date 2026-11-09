@@ -23,7 +23,6 @@ import com.tronno.app.validation.ValidEmail;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 public class AuthDtos {
     public record RegisterRequest(
             @NotBlank(message = "Vui lòng nhập họ tên")

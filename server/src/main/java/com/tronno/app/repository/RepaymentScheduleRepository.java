@@ -23,7 +23,6 @@ import com.tronno.app.models.ScheduleStatus;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 public interface RepaymentScheduleRepository extends JpaRepository<RepaymentSchedule, Long> {
     List<RepaymentSchedule> findByDebtIdOrderByInstallmentNoAsc(Long debtId);
 

@@ -27,7 +27,6 @@ import com.tronno.app.models.TermType;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 public final class ScheduleGenerator {
     public static final BigDecimal DAYS_PER_YEAR = BigDecimal.valueOf(365);
 

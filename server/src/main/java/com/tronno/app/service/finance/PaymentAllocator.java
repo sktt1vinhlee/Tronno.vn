@@ -21,7 +21,6 @@ import com.tronno.app.models.RepaymentSchedule;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 public final class PaymentAllocator {
     public static final String COMPONENT_LATE_FEE = "LATE_FEE";
     public static final String COMPONENT_FEE = "FEE";

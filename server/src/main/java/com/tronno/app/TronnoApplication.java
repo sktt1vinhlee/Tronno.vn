@@ -19,7 +19,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 @SpringBootApplication(exclude = UserDetailsServiceAutoConfiguration.class)
 @EnableScheduling
 public class TronnoApplication {

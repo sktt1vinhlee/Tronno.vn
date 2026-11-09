@@ -21,7 +21,6 @@ import com.tronno.app.models.InterestRateHistory;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 public interface InterestRateHistoryRepository extends JpaRepository<InterestRateHistory, Long> {
     List<InterestRateHistory> findByDebtIdOrderByEffectiveFromAsc(Long debtId);
     List<InterestRateHistory> findByDebtIdAndEffectiveFromLessThanEqual(Long debtId, LocalDate date);

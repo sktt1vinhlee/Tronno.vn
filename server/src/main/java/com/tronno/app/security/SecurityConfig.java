@@ -34,7 +34,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity

@@ -31,7 +31,6 @@ import com.tronno.app.repository.UserRepository;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 @Configuration
 @RequiredArgsConstructor
 public class DataSeeder {

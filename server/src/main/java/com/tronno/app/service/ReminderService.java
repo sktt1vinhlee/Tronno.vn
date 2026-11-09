@@ -35,7 +35,6 @@ import com.tronno.app.service.finance.Money;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 @Service
 @RequiredArgsConstructor
 public class ReminderService {

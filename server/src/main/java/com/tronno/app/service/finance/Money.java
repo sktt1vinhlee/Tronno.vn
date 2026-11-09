@@ -17,7 +17,6 @@ import java.math.RoundingMode;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 public final class Money {
     public static final int SCALE = 2;
 

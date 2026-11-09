@@ -21,7 +21,6 @@ import java.lang.annotation.*;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 @Documented
 @NotBlank(message = "Vui lòng nhập email")
 @Email(message = "Email không hợp lệ")

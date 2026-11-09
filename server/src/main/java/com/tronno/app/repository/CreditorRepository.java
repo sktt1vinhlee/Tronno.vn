@@ -21,7 +21,6 @@ import com.tronno.app.models.Creditor;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 public interface CreditorRepository extends JpaRepository<Creditor, Long> {
     List<Creditor> findByUserIdOrderByNameAsc(Long userId);
     Optional<Creditor> findByIdAndUserId(Long id, Long userId);

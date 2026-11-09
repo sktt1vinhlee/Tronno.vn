@@ -31,7 +31,6 @@ import com.tronno.app.service.finance.PaymentAllocator;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 @Service
 @RequiredArgsConstructor
 public class ReportService {

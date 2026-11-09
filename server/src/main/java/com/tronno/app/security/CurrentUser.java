@@ -16,7 +16,6 @@ import org.springframework.security.core.Authentication;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 public final class CurrentUser {
     private CurrentUser() {
     }

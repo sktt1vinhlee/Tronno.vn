@@ -21,7 +21,6 @@ import lombok.*;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 @Entity
 @Table(name = "debts")
 @Getter

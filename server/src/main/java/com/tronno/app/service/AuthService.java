@@ -29,7 +29,6 @@ import com.tronno.app.security.JwtService;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 @Service
 @RequiredArgsConstructor
 public class AuthService {

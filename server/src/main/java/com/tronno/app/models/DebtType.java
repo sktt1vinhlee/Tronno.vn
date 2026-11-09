@@ -13,7 +13,6 @@ package com.tronno.app.models;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 public enum DebtType {
     BANK_LOAN,
     CREDIT_CARD,

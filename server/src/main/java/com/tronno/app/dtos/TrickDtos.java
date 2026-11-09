@@ -17,7 +17,6 @@ import java.math.BigDecimal;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 public class TrickDtos {
     public record LetterRequest(
             Long debtId,

@@ -23,7 +23,6 @@ import com.tronno.app.validation.RoundAmount;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 public class DebtDtos {
     public record CreditorRequest(
             @NotBlank(message = "Vui lòng nhập tên chủ nợ")

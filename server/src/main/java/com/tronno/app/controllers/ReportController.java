@@ -25,7 +25,6 @@ import com.tronno.app.service.ReportService;
  * -----------------------------------------------------------------------
  * 09-11-2026         VinhHL             Create
  */
-
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
