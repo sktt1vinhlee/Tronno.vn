@@ -1,5 +1,10 @@
 package com.tronno.app.service.finance;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.tronno.app.models.Debt;
 import com.tronno.app.models.InterestMethod;
 import com.tronno.app.models.InterestRateHistory;
@@ -7,10 +12,21 @@ import com.tronno.app.models.RepaymentSchedule;
 import com.tronno.app.models.ScheduleStatus;
 import com.tronno.app.models.ScheduleType;
 import com.tronno.app.models.TermType;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+
+/**
+ * ScheduleGenerator
+ *
+ * Version 1.0
+ *
+ * Date: 09-11-2026
+ *
+ * Copyright VinhHL
+ *
+ * Modification Logs:
+ * DATE                 AUTHOR          DESCRIPTION
+ * -----------------------------------------------------------------------
+ * 09-11-2026         VinhHL             Create
+ */
 
 public final class ScheduleGenerator {
     public static final BigDecimal DAYS_PER_YEAR = BigDecimal.valueOf(365);
@@ -18,6 +34,15 @@ public final class ScheduleGenerator {
     private ScheduleGenerator() {
     }
 
+    /**
+     * Sinh lịch trả gốc và lãi cho một khoản nợ theo kiểu lịch cùng phương pháp tính lãi đã cấu hình.
+     *
+     * @param debt khoản nợ cần sinh lịch
+     * @param rateHistory lịch sử lãi suất
+     * @param paidPrincipal gốc đã trả
+     * @param paidAmount tổng tiền đã trả
+     * @return List lịch trả đã sinh
+     */
     public static List<RepaymentSchedule> generate(
             Debt debt,
             List<InterestRateHistory> rateHistory,
@@ -131,6 +156,16 @@ public final class ScheduleGenerator {
         return result;
     }
 
+    /**
+     * Tính lãi phát sinh trong một kỳ theo phương pháp của khoản nợ.
+     *
+     * @param debt khoản nợ
+     * @param outstanding dư nợ đầu kỳ
+     * @param annualRate lãi suất năm
+     * @param days số ngày của kỳ
+     * @param periodStart ngày bắt đầu kỳ
+     * @return BigDecimal tiền lãi của kỳ
+     */
     private static BigDecimal interestFor(
             Debt debt, BigDecimal outstanding, BigDecimal annualRate, long days, LocalDate periodStart) {
         if (Money.isZero(outstanding) || annualRate == null || annualRate.signum() == 0) {
@@ -148,6 +183,14 @@ public final class ScheduleGenerator {
         return Money.multiply(Money.multiply(base, dailyRate), daysFactor);
     }
 
+    /**
+     * Tra cứu lãi suất có hiệu lực tại một ngày nhất định.
+     *
+     * @param histories lịch sử lãi suất
+     * @param date ngày cần tra cứu
+     * @param fallback lãi suất mặc định khi không có dữ liệu
+     * @return BigDecimal lãi suất áp dụng
+     */
     public static BigDecimal rateFor(
             List<InterestRateHistory> histories, LocalDate date, BigDecimal fallback) {
         if (histories == null || histories.isEmpty()) return fallback;
@@ -164,6 +207,14 @@ public final class ScheduleGenerator {
         return result;
     }
 
+    /**
+     * Tính số tiền trả đều hằng kỳ theo phương pháp niên kim.
+     *
+     * @param principal gốc vay
+     * @param annualRate lãi suất năm
+     * @param term số kỳ trả
+     * @return BigDecimal tiền trả mỗi kỳ
+     */
     public static BigDecimal annuityPayment(BigDecimal principal, BigDecimal annualRate, int term) {
         if (principal == null || principal.signum() == 0) return Money.zero();
         BigDecimal r = annualRate == null ? BigDecimal.ZERO
@@ -177,6 +228,14 @@ public final class ScheduleGenerator {
         return Money.multiply(principal, r).divide(denominator, 6, java.math.RoundingMode.HALF_UP);
     }
 
+    /**
+     * Tính phí phạt trễ hạn theo cấu hình của khoản nợ.
+     *
+     * @param debt khoản nợ
+     * @param overdueDays số ngày trễ hạn
+     * @param balance dư nợ còn lại
+     * @return BigDecimal tiền phạt trễ hạn
+     */
     public static BigDecimal lateFee(Debt debt, long overdueDays, BigDecimal balance) {
         if (overdueDays <= 0) return Money.zero();
         return switch (debt.getLateFeeType()) {

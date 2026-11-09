@@ -1,10 +1,26 @@
 package com.tronno.app.service.finance;
 
-import com.tronno.app.models.Debt;
-import com.tronno.app.models.RepaymentSchedule;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+
+import com.tronno.app.models.Debt;
+import com.tronno.app.models.RepaymentSchedule;
+
+/**
+ * PaymentAllocator
+ *
+ * Version 1.0
+ *
+ * Date: 09-11-2026
+ *
+ * Copyright VinhHL
+ *
+ * Modification Logs:
+ * DATE                 AUTHOR          DESCRIPTION
+ * -----------------------------------------------------------------------
+ * 09-11-2026         VinhHL             Create
+ */
 
 public final class PaymentAllocator {
     public static final String COMPONENT_LATE_FEE = "LATE_FEE";
@@ -21,6 +37,16 @@ public final class PaymentAllocator {
     public record Result(List<Allocation> allocations, BigDecimal applied, BigDecimal surplus) {
     }
 
+    /**
+     * Phân bổ một khoản tiền trả vào các kỳ trả theo thứ tự ưu tiên phí phạt trễ, phí, lãi rồi gốc.
+     *
+     * @param amount số tiền trả
+     * @param schedules danh sách kỳ trả
+     * @param debt khoản nợ
+     * @param today ngày hiện tại
+     * @param targetScheduleId id kỳ trả được chỉ định, có thể null
+     * @return Result chứa các khoản phân bổ, tổng đã áp dụng và tiền dư
+     */
     public static Result allocate(
             BigDecimal amount,
             List<RepaymentSchedule> schedules,
@@ -92,6 +118,14 @@ public final class PaymentAllocator {
         return new Result(allocations, applied, surplus);
     }
 
+    /**
+     * Tính phí phạt trễ hạn đang tồn tại tại một kỳ trả.
+     *
+     * @param debt khoản nợ
+     * @param schedule kỳ trả
+     * @param today ngày hiện tại
+     * @return BigDecimal tiền phạt trễ hạn
+     */
     public static BigDecimal currentLateFee(Debt debt, RepaymentSchedule schedule, LocalDate today) {
         if (debt == null || schedule == null) return Money.zero();
         if (!schedule.getDueDate().isBefore(today)) return Money.zero();

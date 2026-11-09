@@ -1,5 +1,15 @@
 package com.tronno.app.service;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.tronno.app.dtos.DebtDtos.*;
 import com.tronno.app.exception.ResourceNotFoundException;
 import com.tronno.app.models.*;
@@ -8,14 +18,21 @@ import com.tronno.app.service.finance.DateRules;
 import com.tronno.app.service.finance.Money;
 import com.tronno.app.service.finance.PaymentAllocator;
 import com.tronno.app.service.finance.ScheduleGenerator;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.*;
-import java.util.stream.Collectors;
+
+/**
+ * DebtService
+ *
+ * Version 1.0
+ *
+ * Date: 09-11-2026
+ *
+ * Copyright VinhHL
+ *
+ * Modification Logs:
+ * DATE                 AUTHOR          DESCRIPTION
+ * -----------------------------------------------------------------------
+ * 09-11-2026         VinhHL             Create
+ */
 
 @Service
 @RequiredArgsConstructor
@@ -28,12 +45,25 @@ public class DebtService {
     private final InterestRateHistoryRepository rateHistory;
     private final ReminderRepository reminders;
 
+    /**
+     * Lấy danh sách chủ nợ của người dùng.
+     *
+     * @param userId id người dùng
+     * @return List chủ nợ
+     */
     @Transactional(readOnly = true)
     public List<CreditorResponse> listCreditors(Long userId) {
         return creditors.findByUserIdOrderByNameAsc(userId).stream()
                 .map(CreditorResponse::from).toList();
     }
 
+    /**
+     * Tạo mới một chủ nợ.
+     *
+     * @param userId id người dùng
+     * @param r thông tin chủ nợ
+     * @return CreditorResponse chủ nợ vừa tạo
+     */
     @Transactional
     public CreditorResponse createCreditor(Long userId, CreditorRequest r) {
         Creditor c = new Creditor(userId, r.name().trim(),
@@ -45,6 +75,14 @@ public class DebtService {
         return CreditorResponse.from(c);
     }
 
+    /**
+     * Cập nhật thông tin chủ nợ.
+     *
+     * @param userId id người dùng
+     * @param id id chủ nợ
+     * @param r thông tin mới
+     * @return CreditorResponse chủ nợ đã cập nhật
+     */
     @Transactional
     public CreditorResponse updateCreditor(Long userId, Long id, CreditorRequest r) {
         Creditor c = creditors.findByIdAndUserId(id, userId)
@@ -58,6 +96,12 @@ public class DebtService {
         return CreditorResponse.from(c);
     }
 
+    /**
+     * Xoá một chủ nợ của người dùng.
+     *
+     * @param userId id người dùng
+     * @param id id chủ nợ
+     */
     @Transactional
     public void deleteCreditor(Long userId, Long id) {
         Creditor c = creditors.findByIdAndUserId(id, userId)
@@ -65,6 +109,13 @@ public class DebtService {
         creditors.delete(c);
     }
 
+    /**
+     * Tạo mới một khoản nợ cùng lịch trả.
+     *
+     * @param userId id người dùng
+     * @param r thông tin khoản nợ
+     * @return DebtResponse khoản nợ vừa tạo
+     */
     @Transactional
     public DebtResponse createDebt(Long userId, DebtRequest r) {
         Long creditorId = resolveCreditorId(userId, r);
@@ -95,6 +146,10 @@ public class DebtService {
      *   <li>Nếu nhập tay tên chủ nợ: tự tạo chủ nợ mới.</li>
      *   <li>Nếu cả hai đều rỗng: khoản nợ không gắn với chủ nợ nào.</li>
      * </ul>
+     *
+     * @param userId id người dùng
+     * @param r thông tin khoản nợ
+     * @return Long id chủ nợ, có thể null
      */
     private Long resolveCreditorId(Long userId, DebtRequest r) {
         if (r.creditorId() != null) {
@@ -113,6 +168,13 @@ public class DebtService {
         return null;
     }
 
+    /**
+     * Lấy danh sách khoản nợ theo trạng thái.
+     *
+     * @param userId id người dùng
+     * @param status trạng thái lọc, có thể null
+     * @return List khoản nợ
+     */
     @Transactional(readOnly = true)
     public List<DebtResponse> listDebts(Long userId, DebtStatus status) {
         List<Debt> list = status == null
@@ -121,11 +183,26 @@ public class DebtService {
         return list.stream().map(this::toResponse).toList();
     }
 
+    /**
+     * Lấy chi tiết một khoản nợ.
+     *
+     * @param userId id người dùng
+     * @param debtId id khoản nợ
+     * @return DebtResponse thông tin khoản nợ
+     */
     @Transactional(readOnly = true)
     public DebtResponse getDebt(Long userId, Long debtId) {
         return toResponse(requireDebt(userId, debtId));
     }
 
+    /**
+     * Cập nhật khoản nợ và sinh lại lịch trả nếu cần.
+     *
+     * @param userId id người dùng
+     * @param debtId id khoản nợ
+     * @param r thông tin mới
+     * @return DebtResponse khoản nợ đã cập nhật
+     */
     @Transactional
     public DebtResponse updateDebt(Long userId, Long debtId, DebtRequest r) {
         Debt d = requireDebt(userId, debtId);
@@ -157,6 +234,13 @@ public class DebtService {
         return toResponse(d);
     }
 
+    /**
+     * Chuyển khoản nợ sang trạng thái đã đóng hoặc đã tất toán.
+     *
+     * @param userId id người dùng
+     * @param debtId id khoản nợ
+     * @param status trạng thái mới
+     */
     @Transactional
     public void closeDebt(Long userId, Long debtId, DebtStatus status) {
         Debt d = requireDebt(userId, debtId);
@@ -165,6 +249,12 @@ public class DebtService {
         debts.save(d);
     }
 
+    /**
+     * Xoá một khoản nợ cùng lịch trả và lịch sử liên quan.
+     *
+     * @param userId id người dùng
+     * @param debtId id khoản nợ
+     */
     @Transactional
     public void deleteDebt(Long userId, Long debtId) {
         Debt d = requireDebt(userId, debtId);
@@ -178,6 +268,13 @@ public class DebtService {
         debts.delete(d);
     }
 
+    /**
+     * Lấy lịch trả của một khoản nợ.
+     *
+     * @param userId id người dùng
+     * @param debtId id khoản nợ
+     * @return List kỳ trả
+     */
     @Transactional(readOnly = true)
     public List<ScheduleResponse> listSchedule(Long userId, Long debtId) {
         Debt d = requireDebt(userId, debtId);
@@ -187,6 +284,13 @@ public class DebtService {
                 .toList();
     }
 
+    /**
+     * Sinh lại toàn bộ lịch trả khi khoản nợ thay đổi, giữ nguyên phần đã trả.
+     *
+     * @param userId id người dùng
+     * @param d khoản nợ
+     * @return DebtResponse khoản nợ với lịch trả mới
+     */
     @Transactional
     public DebtResponse recalculateSchedule(Long userId, Debt d) {
         List<RepaymentSchedule> existing = schedules.findByDebtIdOrderByInstallmentNoAsc(d.getId());
@@ -230,6 +334,14 @@ public class DebtService {
         return toResponse(d);
     }
 
+    /**
+     * Ghi nhận một khoản trả và phân bổ vào các kỳ trả.
+     *
+     * @param userId id người dùng
+     * @param debtId id khoản nợ
+     * @param r thông tin khoản trả
+     * @return PaymentResponse khoản trả vừa ghi nhận
+     */
     @Transactional
     public PaymentResponse recordPayment(Long userId, Long debtId, PaymentRequest r) {
         Debt d = requireDebt(userId, debtId);
@@ -302,6 +414,14 @@ public class DebtService {
                 p.getStatus(), allocationResponses);
     }
 
+    /**
+     * Đảo bút toán một khoản trả đã ghi nhận.
+     *
+     * @param userId id người dùng
+     * @param paymentId id khoản trả
+     * @param reason lý do đảo bút toán
+     * @return PaymentResponse khoản trả sau khi đảo
+     */
     @Transactional
     public PaymentResponse reversePayment(Long userId, Long paymentId, String reason) {
         Payment original = payments.findById(paymentId)
@@ -359,6 +479,13 @@ public class DebtService {
                 reversal.getMethod(), reversal.getNote(), reversal.getStatus(), List.of());
     }
 
+    /**
+     * Lấy lịch sử thanh toán của một khoản nợ.
+     *
+     * @param userId id người dùng
+     * @param debtId id khoản nợ
+     * @return List khoản trả
+     */
     @Transactional(readOnly = true)
     public List<PaymentResponse> listPayments(Long userId, Long debtId) {
         Debt d = requireDebt(userId, debtId);
@@ -381,6 +508,14 @@ public class DebtService {
                 }).toList();
     }
 
+    /**
+     * Thay đổi lãi suất của khoản nợ và sinh lại lịch trả.
+     *
+     * @param userId id người dùng
+     * @param debtId id khoản nợ
+     * @param r thông tin lãi suất mới
+     * @return DebtResponse khoản nợ đã cập nhật
+     */
     @Transactional
     public DebtResponse changeRate(Long userId, Long debtId, RateChangeRequest r) {
         Debt d = requireDebt(userId, debtId);
@@ -409,6 +544,13 @@ public class DebtService {
         return toResponse(d);
     }
 
+    /**
+     * Lấy lịch sử thay đổi lãi suất của khoản nợ.
+     *
+     * @param userId id người dùng
+     * @param debtId id khoản nợ
+     * @return List lịch sử lãi suất
+     */
     @Transactional(readOnly = true)
     public List<RateChangeResponse> listRateHistory(Long userId, Long debtId) {
         requireDebt(userId, debtId);
@@ -418,6 +560,14 @@ public class DebtService {
                 .toList();
     }
 
+    /**
+     * Gia hạn khoản nợ thêm số tháng yêu cầu.
+     *
+     * @param userId id người dùng
+     * @param debtId id khoản nợ
+     * @param r thông tin gia hạn
+     * @return DebtResponse khoản nợ sau gia hạn
+     */
     @Transactional
     public DebtResponse extendDebt(Long userId, Long debtId, ExtensionRequest r) {
         Debt d = requireDebt(userId, debtId);
@@ -437,11 +587,25 @@ public class DebtService {
         return toResponse(d);
     }
 
+    /**
+     * Lấy khoản nợ của người dùng hoặc báo lỗi nếu không tồn tại.
+     *
+     * @param userId id người dùng
+     * @param debtId id khoản nợ
+     * @return Debt khoản nợ tìm thấy
+     */
     private Debt requireDebt(Long userId, Long debtId) {
         return debts.findByIdAndUserId(debtId, userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy khoản nợ"));
     }
 
+    /**
+     * Tạo entity khoản nợ từ DTO.
+     *
+     * @param userId id người dùng
+     * @param r thông tin khoản nợ
+     * @return Debt entity khoản nợ
+     */
     private Debt buildDebt(Long userId, DebtRequest r) {
         Debt d = new Debt();
         d.setUserId(userId);
@@ -474,6 +638,9 @@ public class DebtService {
      *       Hệ thống tự tính số tháng kỳ hạn = chênh lệch từ ngày giải ngân đến ngày đáo hạn.</li>
      *   <li>{@link TermType#QUARTERLY}: trả theo quý, mỗi kỳ 3 tháng một lần.</li>
      * </ul>
+     *
+     * @param d khoản nợ
+     * @param r thông tin khoản nợ
      */
     private void applyTerm(Debt d, DebtRequest r) {
         TermType type = r.termType() == null ? TermType.FIXED_DATE : r.termType();
@@ -504,6 +671,13 @@ public class DebtService {
         d.setTermMonths((int) months);
     }
 
+    /**
+     * Xác định trạng thái của một kỳ trả tại ngày hiện tại.
+     *
+     * @param s kỳ trả
+     * @param today ngày hiện tại
+     * @return ScheduleStatus trạng thái kỳ trả
+     */
     private ScheduleStatus resolveStatus(RepaymentSchedule s, LocalDate today) {
         BigDecimal paid = Money.add(Money.add(s.getPrincipalPaid(), s.getInterestPaid()), s.getFeePaid());
         BigDecimal total = Money.add(Money.add(s.getPrincipalDue(), s.getInterestDue()), s.getFeeDue());
@@ -514,6 +688,11 @@ public class DebtService {
         return s.getDueDate().isBefore(today) ? ScheduleStatus.OVERDUE : ScheduleStatus.PENDING;
     }
 
+    /**
+     * Cập nhật lại trạng thái khoản nợ dựa trên các kỳ trả.
+     *
+     * @param d khoản nợ
+     */
     private void refreshDebtStatus(Debt d) {
         List<RepaymentSchedule> all = schedules.findByDebtIdOrderByInstallmentNoAsc(d.getId());
         boolean allPaid = all.stream().allMatch(s -> s.getStatus() == ScheduleStatus.PAID);
@@ -523,6 +702,12 @@ public class DebtService {
         }
     }
 
+    /**
+     * Chuyển đổi entity Debt thành DTO trả về cho client.
+     *
+     * @param d entity khoản nợ
+     * @return DebtResponse thông tin khoản nợ
+     */
     public DebtResponse toResponse(Debt d) {
         LocalDate today = LocalDate.now();
         List<RepaymentSchedule> list = schedules.findByDebtIdOrderByInstallmentNoAsc(d.getId());
@@ -581,6 +766,14 @@ public class DebtService {
                 next == null ? null : next.getDueDate(), nextAmount, debtFreeDate);
     }
 
+    /**
+     * Chuyển đổi entity RepaymentSchedule thành DTO kèm số tiền còn lại.
+     *
+     * @param s entity kỳ trả
+     * @param d khoản nợ
+     * @param today ngày hiện tại
+     * @return ScheduleResponse thông tin kỳ trả
+     */
     public ScheduleResponse toScheduleResponse(RepaymentSchedule s, Debt d, LocalDate today) {
         BigDecimal remaining = Money.subtract(s.getTotalDue(), s.getPaidAmount());
         BigDecimal lateFee = PaymentAllocator.currentLateFee(d, s, today);
@@ -591,6 +784,12 @@ public class DebtService {
                 remaining, lateFee, s.getStatus(), s.getPaidAt());
     }
 
+    /**
+     * Chuyển chuỗi rỗng thành null để lưu vào database.
+     *
+     * @param value chuỗi cần chuẩn hoá
+     * @return String đã chuẩn hoá
+     */
     private static String blankToNull(String value) {
         return value == null || value.isBlank() ? null : value.trim();
     }

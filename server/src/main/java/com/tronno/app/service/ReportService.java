@@ -1,19 +1,36 @@
 package com.tronno.app.service;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.tronno.app.dtos.DebtDtos.*;
 import com.tronno.app.models.*;
 import com.tronno.app.repository.*;
 import com.tronno.app.service.finance.DateRules;
 import com.tronno.app.service.finance.Money;
 import com.tronno.app.service.finance.PaymentAllocator;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.YearMonth;
-import java.util.*;
-import java.util.stream.Collectors;
+
+/**
+ * ReportService
+ *
+ * Version 1.0
+ *
+ * Date: 09-11-2026
+ *
+ * Copyright VinhHL
+ *
+ * Modification Logs:
+ * DATE                 AUTHOR          DESCRIPTION
+ * -----------------------------------------------------------------------
+ * 09-11-2026         VinhHL             Create
+ */
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +41,12 @@ public class ReportService {
     private final UserRepository users;
     private final DebtService debtService;
 
+    /**
+     * Tổng hợp số liệu bảng điều khiển của người dùng.
+     *
+     * @param userId id người dùng
+     * @return DashboardResponse số liệu tổng hợp
+     */
     @Transactional(readOnly = true)
     public DashboardResponse dashboard(Long userId) {
         LocalDate today = LocalDate.now();
@@ -104,10 +127,23 @@ public class ReportService {
                 upcomingResponses, debtResponses, cashflow, payoffCurve, alert);
     }
 
+    /**
+     * Tìm khoản nợ theo id.
+     *
+     * @param debtId id khoản nợ
+     * @return Debt khoản nợ tìm thấy, có thể null
+     */
     private Debt findDebt(Long debtId) {
         return debts.findById(debtId).orElse(null);
     }
 
+    /**
+     * Dựng dòng tiền theo tháng từ các kỳ trả.
+     *
+     * @param all danh sách kỳ trả
+     * @param today ngày hiện tại
+     * @return List dòng tiền theo tháng
+     */
     private List<CashflowMonth> buildCashflow(List<RepaymentSchedule> all, LocalDate today) {
         Map<YearMonth, BigDecimal> dueMap = new HashMap<>();
         Map<YearMonth, BigDecimal> paidMap = new HashMap<>();
@@ -132,6 +168,13 @@ public class ReportService {
         return result;
     }
 
+    /**
+     * Dựng đường cong tất toán của khoản nợ.
+     *
+     * @param all danh sách kỳ trả
+     * @param today ngày hiện tại
+     * @return List các điểm tất toán
+     */
     private List<PayoffPoint> buildPayoffCurve(List<RepaymentSchedule> all, LocalDate today) {
         List<PayoffPoint> points = new ArrayList<>();
 
@@ -154,6 +197,14 @@ public class ReportService {
         return points;
     }
 
+    /**
+     * Cảnh báo khoản nợ sắp đến hạn trong 7 ngày tới.
+     *
+     * @param all danh sách kỳ trả
+     * @param today ngày hiện tại
+     * @param monthlyIncome thu nhập hằng tháng
+     * @return CashflowAlert cảnh báo
+     */
     private CashflowAlert buildCashflowAlert(List<RepaymentSchedule> all, LocalDate today,
             BigDecimal monthlyIncome) {
         LocalDate horizon = today.plusDays(7);
@@ -192,10 +243,22 @@ public class ReportService {
         return new CashflowAlert(week.size(), total, projected, message, level);
     }
 
+    /**
+     * Định dạng số tiền theo kiểu Việt Nam.
+     *
+     * @param value số tiền cần định dạng
+     * @return String số tiền đã định dạng
+     */
     private String formatVnd(BigDecimal value) {
         return Money.round(value).toPlainString() + " đ";
     }
 
+    /**
+     * Lấy toàn bộ lịch sử thanh toán của người dùng.
+     *
+     * @param userId id người dùng
+     * @return List khoản trả
+     */
     @Transactional(readOnly = true)
     public List<PaymentResponse> listAllPayments(Long userId) {
         List<PaymentResponse> result = new ArrayList<>();
@@ -205,6 +268,13 @@ public class ReportService {
         return result;
     }
 
+    /**
+     * Thống kê dòng tiền theo tháng trong nhiều tháng.
+     *
+     * @param userId id người dùng
+     * @param months số tháng cần thống kê
+     * @return List dòng tiền theo tháng
+     */
     @Transactional(readOnly = true)
     public List<CashflowMonth> monthlyCashflow(Long userId, int months) {
         LocalDate today = LocalDate.now();

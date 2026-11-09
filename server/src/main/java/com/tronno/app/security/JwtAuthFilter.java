@@ -1,11 +1,12 @@
 package com.tronno.app.security;
 
-import com.tronno.app.models.User;
-import com.tronno.app.repository.UserRepository;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import java.io.IOException;
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +15,24 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import java.io.IOException;
-import java.util.List;
+
+import com.tronno.app.models.User;
+import com.tronno.app.repository.UserRepository;
+
+/**
+ * JwtAuthFilter
+ *
+ * Version 1.0
+ *
+ * Date: 09-11-2026
+ *
+ * Copyright VinhHL
+ *
+ * Modification Logs:
+ * DATE                 AUTHOR          DESCRIPTION
+ * -----------------------------------------------------------------------
+ * 09-11-2026         VinhHL             Create
+ */
 
 @Component
 @RequiredArgsConstructor
@@ -25,6 +42,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserRepository users;
 
+    /**
+     * Kiểm tra token trong header và thiết lập ngữ cảnh xác thực cho request.
+     *
+     * @param req request hiện tại
+     * @param res response hiện tại
+     * @param chain chuỗi filter
+     * @throws ServletException nếu xử lý filter thất bại
+     * @throws IOException nếu ghi response thất bại
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
             throws ServletException, IOException {

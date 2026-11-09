@@ -1,19 +1,21 @@
 package com.tronno.app.service;
 
-import com.tronno.app.dtos.DebtDtos.ReminderResponse;
-import com.tronno.app.exception.ResourceNotFoundException;
-import com.tronno.app.models.*;
-import com.tronno.app.repository.*;
-import com.tronno.app.service.finance.Money;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
+
+import com.tronno.app.dtos.DebtDtos.ReminderResponse;
+import com.tronno.app.exception.ResourceNotFoundException;
+import com.tronno.app.models.*;
+import com.tronno.app.repository.*;
+import com.tronno.app.service.finance.Money;
 
 /**
  * Nhắc hạn TỰ ĐỘNG.
@@ -21,7 +23,19 @@ import java.util.List;
  * {@link #NOTIFY_BEFORE_DAYS} ngày trước ngày đến hạn, và tiếp tục nhắc mỗi ngày
  * cho tới khi khoản nợ được thanh toán (kỳ trả chuyển sang trạng thái PAID).
  * <p>Người dùng không cần đặt lịch nhắc thủ công nữa.
+ *
+ * Version 1.0
+ *
+ * Date: 09-11-2026
+ *
+ * Copyright VinhHL
+ *
+ * Modification Logs:
+ * DATE                 AUTHOR          DESCRIPTION
+ * -----------------------------------------------------------------------
+ * 09-11-2026         VinhHL             Create
  */
+
 @Service
 @RequiredArgsConstructor
 public class ReminderService {
@@ -36,6 +50,12 @@ public class ReminderService {
     private final UserRepository users;
     private final MailService mailService;
 
+    /**
+     * Lấy toàn bộ nhắc hạn của người dùng.
+     *
+     * @param userId id người dùng
+     * @return List nhắc hạn
+     */
     @Transactional(readOnly = true)
     public List<ReminderResponse> list(Long userId) {
         return reminders.findByUserIdOrderByRemindAtAsc(userId).stream()
@@ -45,6 +65,13 @@ public class ReminderService {
                 }).toList();
     }
 
+    /**
+     * Lấy nhắc hạn của một khoản nợ cụ thể.
+     *
+     * @param userId id người dùng
+     * @param debtId id khoản nợ
+     * @return List nhắc hạn
+     */
     @Transactional(readOnly = true)
     public List<ReminderResponse> listByDebt(Long userId, Long debtId) {
         debts.findByIdAndUserId(debtId, userId)
@@ -63,6 +90,9 @@ public class ReminderService {
      *   <li>Kỳ trả đã quá hạn: nhắc mỗi ngày tới khi được trả.</li>
      * </ul>
      * Mỗi (kỳ trả, ngày) chỉ nhắc tối đa một lần.
+     *
+     * @param today ngày hiện tại
+     * @return int số nhắc hạn đã gửi thành công
      */
     @Transactional
     public int sendDueReminders(LocalDate today) {
@@ -105,7 +135,11 @@ public class ReminderService {
     }
 
     /**
-     * Gửi ngay một nhắc hạn (không chờ tới lịch 8:00).
+     * Gửi ngay một nhắc hạn mà không cần chờ tới lịch 8:00.
+     *
+     * @param userId id người dùng
+     * @param id id nhắc hạn
+     * @return ReminderResponse nhắc hạn sau khi gửi
      */
     @Transactional
     public ReminderResponse sendNow(Long userId, Long id) {
@@ -124,6 +158,13 @@ public class ReminderService {
         return toResponse(r, debt);
     }
 
+    /**
+     * Xác định loại nhắc dựa trên ngày đến hạn của kỳ trả.
+     *
+     * @param schedule kỳ trả
+     * @param today ngày hiện tại
+     * @return ReminderType loại nhắc
+     */
     private ReminderType resolveType(RepaymentSchedule schedule, LocalDate today) {
         LocalDate due = schedule.getDueDate();
         if (due.isAfter(today)) return ReminderType.BEFORE_DUE;
@@ -131,11 +172,25 @@ public class ReminderService {
         return ReminderType.OVERDUE;
     }
 
+    /**
+     * Gửi email nhắc nợ tới chính email của người đi nợ.
+     *
+     * @param user người đi nợ
+     * @param debt khoản nợ
+     * @param r nhắc hạn
+     * @return boolean true nếu gửi thành công
+     */
     private boolean deliver(User user, Debt debt, Reminder r) {
         String subject = "[TRONNO] Nhắc trả nợ: " + debt.getName();
         return mailService.sendReminderMail(user.getEmail(), subject, r.getMessage());
     }
 
+    /**
+     * Tính mức ưu tiên của nhắc hạn dựa trên rủi ro khoản nợ.
+     *
+     * @param debt khoản nợ
+     * @return int mức ưu tiên
+     */
     private int priorityOf(Debt debt) {
         int priority = 0;
         if (debt.getLateFeeType() != LateFeeType.NONE) {
@@ -153,6 +208,15 @@ public class ReminderService {
         return priority;
     }
 
+    /**
+     * Soạn nội dung email nhắc trả nợ.
+     *
+     * @param debt khoản nợ
+     * @param schedule kỳ trả
+     * @param type loại nhắc
+     * @param today ngày hiện tại
+     * @return String nội dung email
+     */
     private String buildMessage(Debt debt, RepaymentSchedule schedule, ReminderType type, LocalDate today) {
         BigDecimal remaining = Money.subtract(schedule.getTotalDue(), schedule.getPaidAmount());
         long daysLeft = java.time.temporal.ChronoUnit.DAYS.between(today, schedule.getDueDate());
@@ -178,6 +242,13 @@ public class ReminderService {
                 + "Hãy đăng nhập TRONNO để xem chi tiết và ghi nhận thanh toán.";
     }
 
+    /**
+     * Chuyển đổi entity Reminder thành DTO trả về cho client.
+     *
+     * @param r entity nhắc hạn
+     * @param d khoản nợ, có thể null
+     * @return ReminderResponse thông tin nhắc hạn
+     */
     private ReminderResponse toResponse(Reminder r, Debt d) {
         return new ReminderResponse(r.getId(), r.getDebtId(),
                 d == null ? null : d.getName(), r.getScheduleId(), r.getRemindType(),

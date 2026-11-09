@@ -1,20 +1,32 @@
 package com.tronno.app.config;
 
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+
 import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.util.List;
-
 /**
  * Kiểm tra schema đã được tạo hay chưa.
  * <p>TRONNO không dùng Flyway. Schema được tạo bằng file SQL thủ công:
  * {@code src/main/resources/db/01_schema.sql}.
+ *
+ * Version 1.0
+ *
+ * Date: 09-11-2026
+ *
+ * Copyright VinhHL
+ *
+ * Modification Logs:
+ * DATE                 AUTHOR          DESCRIPTION
+ * -----------------------------------------------------------------------
+ * 09-11-2026         VinhHL             Create
  */
+
 @Configuration
 @RequiredArgsConstructor
 @Slf4j

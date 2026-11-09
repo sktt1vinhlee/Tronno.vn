@@ -1,11 +1,26 @@
 package com.tronno.app.validation;
 
 import jakarta.validation.Constraint;
-import jakarta.validation.Payload;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.Payload;
 import java.lang.annotation.*;
+
+/**
+ * Kiểm tra định dạng email hợp lệ.
+ *
+ * Version 1.0
+ *
+ * Date: 09-11-2026
+ *
+ * Copyright VinhHL
+ *
+ * Modification Logs:
+ * DATE                 AUTHOR          DESCRIPTION
+ * -----------------------------------------------------------------------
+ * 09-11-2026         VinhHL             Create
+ */
 
 @Documented
 @NotBlank(message = "Vui lòng nhập email")

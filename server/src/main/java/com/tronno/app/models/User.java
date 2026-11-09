@@ -1,9 +1,25 @@
 package com.tronno.app.models;
 
 import jakarta.persistence.*;
-import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import lombok.*;
+
+/**
+ * User
+ *
+ * Version 1.0
+ *
+ * Date: 09-11-2026
+ *
+ * Copyright VinhHL
+ *
+ * Modification Logs:
+ * DATE                 AUTHOR          DESCRIPTION
+ * -----------------------------------------------------------------------
+ * 09-11-2026         VinhHL             Create
+ */
 
 @Entity
 @Table(name = "users")
@@ -46,6 +62,11 @@ public class User {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    /**
+     * Kiểm tra tài khoản có đang hoạt động hay không.
+     *
+     * @return boolean true nếu tài khoản còn hoạt động
+     */
     public boolean isActive() {
         return !blocked;
     }

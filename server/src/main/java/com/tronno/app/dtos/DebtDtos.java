@@ -1,12 +1,28 @@
 package com.tronno.app.dtos;
 
-import com.tronno.app.models.*;
-import com.tronno.app.validation.RoundAmount;
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import com.tronno.app.models.*;
+import com.tronno.app.validation.RoundAmount;
+
+/**
+ * DebtDtos
+ *
+ * Version 1.0
+ *
+ * Date: 09-11-2026
+ *
+ * Copyright VinhHL
+ *
+ * Modification Logs:
+ * DATE                 AUTHOR          DESCRIPTION
+ * -----------------------------------------------------------------------
+ * 09-11-2026         VinhHL             Create
+ */
 
 public class DebtDtos {
     public record CreditorRequest(

@@ -1,9 +1,25 @@
 package com.tronno.app.models;
 
 import jakarta.persistence.*;
-import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import lombok.*;
+
+/**
+ * Creditor
+ *
+ * Version 1.0
+ *
+ * Date: 09-11-2026
+ *
+ * Copyright VinhHL
+ *
+ * Modification Logs:
+ * DATE                 AUTHOR          DESCRIPTION
+ * -----------------------------------------------------------------------
+ * 09-11-2026         VinhHL             Create
+ */
 
 @Entity
 @Table(name = "creditors")
@@ -41,6 +57,13 @@ public class Creditor {
     @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    /**
+     * Tạo chủ nợ với các thông tin cơ bản.
+     *
+     * @param userId id chủ sở hữu
+     * @param name tên chủ nợ
+     * @param kind loại chủ nợ
+     */
     public Creditor(Long userId, String name, CreditorKind kind) {
         this.userId = userId;
         this.name = name;

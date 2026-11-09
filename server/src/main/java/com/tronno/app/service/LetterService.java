@@ -1,23 +1,37 @@
 package com.tronno.app.service;
 
-import com.tronno.app.dtos.TrickDtos.*;
-import com.tronno.app.exception.ResourceNotFoundException;
-import com.tronno.app.models.*;
-import com.tronno.app.repository.*;
-import com.tronno.app.service.finance.Money;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.Locale;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.tronno.app.dtos.TrickDtos.*;
+import com.tronno.app.exception.ResourceNotFoundException;
+import com.tronno.app.models.*;
+import com.tronno.app.repository.*;
+import com.tronno.app.service.finance.Money;
+
 /**
  * Soạn văn: sinh nội dung thông báo gửi chủ nợ và kiểm tra lãi suất hợp pháp.
  * Chỉ xử lý các khoản nợ mà người dùng đang phải trả.
+ *
+ * Version 1.0
+ *
+ * Date: 09-11-2026
+ *
+ * Copyright VinhHL
+ *
+ * Modification Logs:
+ * DATE                 AUTHOR          DESCRIPTION
+ * -----------------------------------------------------------------------
+ * 09-11-2026         VinhHL             Create
  */
+
 @Service
 @RequiredArgsConstructor
 public class LetterService {
@@ -26,6 +40,13 @@ public class LetterService {
 
     private static final double LEGAL_CAP_PERCENT = 20.0;
 
+    /**
+     * Soạn thư bút nợ theo giọng văn được chọn.
+     *
+     * @param userId id người dùng
+     * @param r yêu cầu soạn thư
+     * @return LetterResponse nội dung thư
+     */
     @Transactional(readOnly = true)
     public LetterResponse composeLetter(Long userId, LetterRequest r) {
         Debt debt = null;
@@ -91,11 +112,23 @@ public class LetterService {
         return new LetterResponse(title, body.toString(), delivery, disclaimer);
     }
 
+    /**
+     * Lấy tên chủ nợ của khoản nợ.
+     *
+     * @param debt khoản nợ
+     * @return String tên chủ nợ
+     */
     private String creditorNameOf(Debt debt) {
         if (debt.getCreditorId() == null) return "quý khách";
         return debt.getName();
     }
 
+    /**
+     * Tìm ngày đến hạn kế tiếp của khoản nợ.
+     *
+     * @param debt khoản nợ
+     * @return LocalDate ngày đến hạn
+     */
     private LocalDate nextDueDate(Debt debt) {
         return schedules.findByDebtIdOrderByInstallmentNoAsc(debt.getId()).stream()
                 .filter(s -> s.getStatus() != ScheduleStatus.PAID)
@@ -104,20 +137,45 @@ public class LetterService {
                 .orElse(LocalDate.now());
     }
 
+    /**
+     * Tính số tiền còn phải trả của khoản nợ.
+     *
+     * @param debt khoản nợ
+     * @return BigDecimal số tiền còn lại
+     */
     private BigDecimal remainingOf(Debt debt) {
         return schedules.findByDebtIdOrderByInstallmentNoAsc(debt.getId()).stream()
                 .map(s -> Money.subtract(s.getTotalDue(), s.getPaidAmount()))
                 .reduce(BigDecimal.ZERO, Money::add);
     }
 
+    /**
+     * Lấy họ tên người dùng.
+     *
+     * @param userId id người dùng
+     * @return String họ tên
+     */
     private String userNameOf(Long userId) {
         return "Người vay";
     }
 
+    /**
+     * Lấy số điện thoại người dùng.
+     *
+     * @param userId id người dùng
+     * @return String số điện thoại
+     */
     private String phoneOf(Long userId) {
         return "-";
     }
 
+    /**
+     * Kiểm tra lãi suất có vượt trần pháp luật hay không.
+     *
+     * @param userId id người dùng
+     * @param r thông tin lãi suất
+     * @return RateCheckResponse kết quả kiểm tra
+     */
     @Transactional(readOnly = true)
     public RateCheckResponse checkRate(Long userId, RateCheckRequest r) {
         BigDecimal annualRate = r.annualRate();
@@ -190,6 +248,12 @@ public class LetterService {
                 Money.round(maxLegalMonthlyInterest), guidance, disclaimer);
     }
 
+    /**
+     * Định dạng số tiền theo kiểu Việt Nam.
+     *
+     * @param value số tiền cần định dạng
+     * @return String số tiền đã định dạng
+     */
     private String formatVnd(BigDecimal value) {
         return Money.round(value).toPlainString() + " đ";
     }

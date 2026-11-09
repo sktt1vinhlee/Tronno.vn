@@ -3,7 +3,19 @@ package com.tronno.app.models;
 /**
  * Mức nhắc hạn tự động.
  * TRONNO tự sinh nhắc mỗi ngày cho tới khi khoản nợ được thanh toán.
+ *
+ * Version 1.0
+ *
+ * Date: 09-11-2026
+ *
+ * Copyright VinhHL
+ *
+ * Modification Logs:
+ * DATE                 AUTHOR          DESCRIPTION
+ * -----------------------------------------------------------------------
+ * 09-11-2026         VinhHL             Create
  */
+
 public enum ReminderType {
     /** Còn <= 5 ngày tới hạn: nhắc trước. */
     BEFORE_DUE,
