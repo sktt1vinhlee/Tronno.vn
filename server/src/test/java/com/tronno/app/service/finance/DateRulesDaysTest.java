@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * 10-11-2026         VinhHL             Create
  */
 @DisplayName("DateRules.daysInclusive()/daysBetween()")
-class DateRulesDaysTest {
+public class DateRulesDaysTest {
 
     @Test
     @DisplayName("daysInclusive() tính cả hai đầu mốc")

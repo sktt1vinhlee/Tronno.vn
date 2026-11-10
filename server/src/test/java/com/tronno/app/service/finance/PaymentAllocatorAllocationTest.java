@@ -30,7 +30,7 @@ import static com.tronno.app.service.finance.PaymentAllocatorTestData.schedule;
  * 10-11-2026         VinhHL             Create
  */
 @DisplayName("PaymentAllocator.allocate() - Thứ tự ưu tiên phân bổ")
-class PaymentAllocatorAllocationTest {
+public class PaymentAllocatorAllocationTest {
 
     @Test
     @DisplayName("Trả tiền được trừ lãi trước rồi tới gốc")

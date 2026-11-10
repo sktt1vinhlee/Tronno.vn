@@ -32,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("LetterService.checkRate() - Kiểm tra lãi suất hợp pháp")
-class LetterServiceCheckRateTest {
+public class LetterServiceCheckRateTest {
 
     @Mock
     private DebtRepository debts;

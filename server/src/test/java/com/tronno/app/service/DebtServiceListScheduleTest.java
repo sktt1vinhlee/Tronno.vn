@@ -44,7 +44,7 @@ import static com.tronno.app.service.DebtServiceTestData.schedule;
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("DebtService.listSchedule() - Lịch trả của khoản nợ")
-class DebtServiceListScheduleTest {
+public class DebtServiceListScheduleTest {
 
     @Mock
     private DebtRepository debts;

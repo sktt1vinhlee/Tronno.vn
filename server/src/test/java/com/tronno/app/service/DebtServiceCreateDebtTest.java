@@ -50,7 +50,7 @@ import static com.tronno.app.service.DebtServiceTestData.request;
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("DebtService.createDebt() - Tạo khoản nợ")
-class DebtServiceCreateDebtTest {
+public class DebtServiceCreateDebtTest {
 
     @Mock
     private DebtRepository debts;

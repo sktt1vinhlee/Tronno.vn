@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * 10-11-2026         VinhHL             Create
  */
 @DisplayName("RoundAmountValidator - Số tiền hợp lệ")
-class RoundAmountValidatorValidTest {
+public class RoundAmountValidatorValidTest {
 
     private final RoundAmountValidator validator = new RoundAmountValidator();
 

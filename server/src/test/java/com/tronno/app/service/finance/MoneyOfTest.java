@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * 10-11-2026         VinhHL             Create
  */
 @DisplayName("Money.of() - Chuyển đổi về BigDecimal chuẩn hoá")
-class MoneyOfTest {
+public class MoneyOfTest {
 
     @Test
     @DisplayName("null trả về 0.00")

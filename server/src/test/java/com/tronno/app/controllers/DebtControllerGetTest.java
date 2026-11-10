@@ -38,7 +38,7 @@ import static com.tronno.app.controllers.DebtControllerResponseFactory.response;
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("DebtController GET /api/debts/{id}")
-class DebtControllerGetTest {
+public class DebtControllerGetTest {
 
     @Mock
     private DebtService debtService;

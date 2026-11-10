@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * 10-11-2026         VinhHL             Create
  */
 @DisplayName("Money.max()/min() - Chọn giá trị lớn nhỏ")
-class MoneyExtremeTest {
+public class MoneyExtremeTest {
 
     @Test
     @DisplayName("max() trả về giá trị lớn hơn")

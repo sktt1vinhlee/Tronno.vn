@@ -31,7 +31,7 @@ import static com.tronno.app.service.finance.ScheduleGeneratorTestData.generate;
  * 10-11-2026         VinhHL             Create
  */
 @DisplayName("ScheduleGenerator.generate() - Áp dụng tiền đã trả")
-class ScheduleGeneratorApplyPaidAmountTest {
+public class ScheduleGeneratorApplyPaidAmountTest {
 
     @Test
     @DisplayName("Tiền đã trả được phân bổ vào kỳ trả đầu tiên")

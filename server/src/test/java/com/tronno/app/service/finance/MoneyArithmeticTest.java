@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * 10-11-2026         VinhHL             Create
  */
 @DisplayName("Money - Phép tính cộng/trừ/nhân/chia")
-class MoneyArithmeticTest {
+public class MoneyArithmeticTest {
 
     @Test
     @DisplayName("add() cộng và làm tròn kết quả")

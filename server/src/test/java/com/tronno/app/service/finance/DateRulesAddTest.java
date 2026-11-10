@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * 10-11-2026         VinhHL             Create
  */
 @DisplayName("DateRules.addMonths()/addQuarters()")
-class DateRulesAddTest {
+public class DateRulesAddTest {
 
     @Test
     @DisplayName("addMonths() cộng số tháng")

@@ -33,7 +33,7 @@ import static com.tronno.app.service.finance.ScheduleGeneratorTestData.generate;
  * 10-11-2026         VinhHL             Create
  */
 @DisplayName("ScheduleGenerator.generate() - Lịch trả gốc đều")
-class ScheduleGeneratorEqualPrincipalTest {
+public class ScheduleGeneratorEqualPrincipalTest {
 
     @Test
     @DisplayName("Sinh đúng số kỳ trả theo kỳ hạn")

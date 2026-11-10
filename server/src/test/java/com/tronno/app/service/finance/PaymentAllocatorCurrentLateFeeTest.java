@@ -29,7 +29,7 @@ import static com.tronno.app.service.finance.PaymentAllocatorTestData.schedule;
  * 10-11-2026         VinhHL             Create
  */
 @DisplayName("PaymentAllocator.currentLateFee() - Phí trễ hạn hiện tại")
-class PaymentAllocatorCurrentLateFeeTest {
+public class PaymentAllocatorCurrentLateFeeTest {
 
     @Test
     @DisplayName("Chưa tới hạn thì không có phí")

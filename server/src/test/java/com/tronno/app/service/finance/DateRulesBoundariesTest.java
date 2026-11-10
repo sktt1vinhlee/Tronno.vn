@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * 10-11-2026         VinhHL             Create
  */
 @DisplayName("DateRules.endOfMonth()/startOfMonth()/lastDayOfMonth()")
-class DateRulesBoundariesTest {
+public class DateRulesBoundariesTest {
 
     @Test
     @DisplayName("endOfMonth() trả về ngày cuối tháng")

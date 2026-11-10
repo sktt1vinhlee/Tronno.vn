@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * 10-11-2026         VinhHL             Create
  */
 @DisplayName("GlobalExceptionHandler - Chuyển đổi lỗi thành phản hồi HTTP")
-class GlobalExceptionHandlerTest {
+public class GlobalExceptionHandlerTest {
 
     private final GlobalExceptionHandler handler = new GlobalExceptionHandler();
 

@@ -42,7 +42,7 @@ import static com.tronno.app.service.AuthServiceTestData.registerRequest;
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("AuthService.register() - Đăng ký tài khoản")
-class AuthServiceRegisterTest {
+public class AuthServiceRegisterTest {
 
     @Mock
     private UserRepository users;

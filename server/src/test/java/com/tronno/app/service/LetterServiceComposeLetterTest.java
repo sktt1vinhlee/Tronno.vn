@@ -37,7 +37,7 @@ import static com.tronno.app.service.LetterServiceTestData.schedule;
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("LetterService.composeLetter() - Soạn nội dung thư")
-class LetterServiceComposeLetterTest {
+public class LetterServiceComposeLetterTest {
 
     @Mock
     private DebtRepository debts;

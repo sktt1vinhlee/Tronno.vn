@@ -28,7 +28,7 @@ import static com.tronno.app.service.finance.ScheduleGeneratorTestData.debt;
  * 10-11-2026         VinhHL             Create
  */
 @DisplayName("ScheduleGenerator.lateFee() - Phí phạt trễ hạn")
-class ScheduleGeneratorLateFeeTest {
+public class ScheduleGeneratorLateFeeTest {
 
     @Test
     @DisplayName("Chưa trễ hạn thì không có phí")

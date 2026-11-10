@@ -45,7 +45,7 @@ import static com.tronno.app.service.DebtServiceTestData.debt;
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("DebtService.closeDebt()/deleteDebt() - Đóng và xoá khoản nợ")
-class DebtServiceCloseAndDeleteTest {
+public class DebtServiceCloseAndDeleteTest {
 
     @Mock
     private DebtRepository debts;

@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * 10-11-2026         VinhHL             Create
  */
 @DisplayName("Money - Các phép so sánh")
-class MoneyComparisonTest {
+public class MoneyComparisonTest {
 
     @Test
     @DisplayName("isZero() đúng khi bằng 0")

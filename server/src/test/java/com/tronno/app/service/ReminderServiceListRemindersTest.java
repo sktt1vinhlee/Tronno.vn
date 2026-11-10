@@ -40,7 +40,7 @@ import static com.tronno.app.service.ReminderServiceTestData.debt;
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("ReminderService.list() - Danh sách nhắc hạn")
-class ReminderServiceListRemindersTest {
+public class ReminderServiceListRemindersTest {
 
     @Mock
     private ReminderRepository reminders;

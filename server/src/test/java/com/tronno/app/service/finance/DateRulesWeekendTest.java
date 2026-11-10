@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * 10-11-2026         VinhHL             Create
  */
 @DisplayName("DateRules.isWeekend()/adjustToBusinessDay()")
-class DateRulesWeekendTest {
+public class DateRulesWeekendTest {
 
     @Test
     @DisplayName("isWeekend() đúng với T7 và CN")

@@ -27,7 +27,7 @@ import static com.tronno.app.service.finance.ScheduleGeneratorTestData.DISBURSE;
  * 10-11-2026         VinhHL             Create
  */
 @DisplayName("ScheduleGenerator.rateFor() - Tra cứu lãi suất theo ngày")
-class ScheduleGeneratorRateForTest {
+public class ScheduleGeneratorRateForTest {
 
     @Test
     @DisplayName("Không có lịch sử thì dùng lãi suất mặc định")

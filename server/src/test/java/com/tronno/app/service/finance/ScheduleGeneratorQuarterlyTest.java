@@ -32,7 +32,7 @@ import static com.tronno.app.service.finance.ScheduleGeneratorTestData.generate;
  * 10-11-2026         VinhHL             Create
  */
 @DisplayName("ScheduleGenerator.generate() - Lịch trả theo quý")
-class ScheduleGeneratorQuarterlyTest {
+public class ScheduleGeneratorQuarterlyTest {
 
     @Test
     @DisplayName("Kỳ hạn 12 tháng theo quý sinh 4 kỳ trả")

@@ -45,7 +45,7 @@ import static com.tronno.app.controllers.ControllerTestData.USER_ID;
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("DebtController POST /api/debts/{id}/payments")
-class DebtControllerPayTest {
+public class DebtControllerPayTest {
 
     @Mock
     private DebtService debtService;

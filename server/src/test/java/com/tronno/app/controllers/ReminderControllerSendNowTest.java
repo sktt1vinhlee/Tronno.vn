@@ -37,7 +37,7 @@ import static com.tronno.app.controllers.ReminderControllerResponseFactory.respo
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("ReminderController POST /api/reminders/{id}/send")
-class ReminderControllerSendNowTest {
+public class ReminderControllerSendNowTest {
 
     @Mock
     private ReminderService reminderService;

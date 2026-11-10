@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * 10-11-2026         VinhHL             Create
  */
 @DisplayName("JwtService - Sinh và xác thực token")
-class JwtServiceTest {
+public class JwtServiceTest {
 
     private static final String SECRET = "tronno-test-secret-key-at-least-32-chars-long";
 

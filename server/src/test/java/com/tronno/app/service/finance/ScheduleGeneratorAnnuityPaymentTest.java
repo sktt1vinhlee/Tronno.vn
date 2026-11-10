@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * 10-11-2026         VinhHL             Create
  */
 @DisplayName("ScheduleGenerator.annuityPayment() - Tính tiền trả đều")
-class ScheduleGeneratorAnnuityPaymentTest {
+public class ScheduleGeneratorAnnuityPaymentTest {
 
     @Test
     @DisplayName("Lãi suất 0 thì chia đều gốc")

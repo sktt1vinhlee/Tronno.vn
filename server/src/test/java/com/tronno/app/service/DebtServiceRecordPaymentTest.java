@@ -54,7 +54,7 @@ import static com.tronno.app.service.DebtServiceTestData.schedule;
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("DebtService.recordPayment() - Ghi nhận thanh toán")
-class DebtServiceRecordPaymentTest {
+public class DebtServiceRecordPaymentTest {
 
     @Mock
     private DebtRepository debts;

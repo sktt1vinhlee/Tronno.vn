@@ -38,7 +38,7 @@ import static com.tronno.app.controllers.AuthControllerResponseFactory.response;
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("AuthController PUT /api/auth/me")
-class AuthControllerUpdateMeTest {
+public class AuthControllerUpdateMeTest {
 
     @Mock
     private AuthService auth;

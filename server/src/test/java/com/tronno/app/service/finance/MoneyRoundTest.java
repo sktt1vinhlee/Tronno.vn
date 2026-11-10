@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * 10-11-2026         VinhHL             Create
  */
 @DisplayName("Money.round() - Làm tròn số tiền")
-class MoneyRoundTest {
+public class MoneyRoundTest {
 
     @Test
     @DisplayName("Làm tròn HALF_UP")

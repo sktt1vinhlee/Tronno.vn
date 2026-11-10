@@ -39,7 +39,7 @@ import static com.tronno.app.service.AuthServiceTestData.user;
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("AuthService.login() - Đăng nhập")
-class AuthServiceLoginTest {
+public class AuthServiceLoginTest {
 
     @Mock
     private UserRepository users;

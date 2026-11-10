@@ -41,7 +41,7 @@ import static com.tronno.app.controllers.ControllerTestData.USER_ID;
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("DebtController GET /api/debts/{id}/schedule")
-class DebtControllerScheduleTest {
+public class DebtControllerScheduleTest {
 
     @Mock
     private DebtService debtService;

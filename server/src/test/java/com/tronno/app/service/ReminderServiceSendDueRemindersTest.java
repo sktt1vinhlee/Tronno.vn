@@ -51,7 +51,7 @@ import static com.tronno.app.service.ReminderServiceTestData.user;
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("ReminderService.sendDueReminders() - Sinh và gửi nhắc hạn")
-class ReminderServiceSendDueRemindersTest {
+public class ReminderServiceSendDueRemindersTest {
 
     @Mock
     private ReminderRepository reminders;

@@ -44,7 +44,7 @@ import static com.tronno.app.service.DebtServiceTestData.debt;
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("DebtService.getDebt()/listDebts() - Truy vấn khoản nợ")
-class DebtServiceQueryTest {
+public class DebtServiceQueryTest {
 
     @Mock
     private DebtRepository debts;

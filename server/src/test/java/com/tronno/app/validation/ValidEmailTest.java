@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * 10-11-2026         VinhHL             Create
  */
 @DisplayName("ValidEmail - Kiểm tra định dạng email")
-class ValidEmailTest {
+public class ValidEmailTest {
 
     private final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     private final Validator validator = factory.getValidator();

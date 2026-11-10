@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * 10-11-2026         VinhHL             Create
  */
 @DisplayName("Money.roundRate() - Làm tròn lãi suất 8 chữ số thập phân")
-class MoneyRoundRateTest {
+public class MoneyRoundRateTest {
 
     @Test
     @DisplayName("Giữ tối đa 8 chữ số thập phân")
